@@ -22,8 +22,8 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
 
     // https://projectlombok.org
-    compileOnly 'org.projectlombok:lombok:1.18.4'
-    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    // compileOnly 'org.projectlombok:lombok:1.18.4'
+    // annotationProcessor 'org.projectlombok:lombok:1.18.4'
 }
 
 test {
@@ -35,5 +35,5 @@ test {
 
 javadoc {
     source = sourceSets.main.allJava
-    classpath = configurations.compile
+    // classpath = configurations.compile
 }
