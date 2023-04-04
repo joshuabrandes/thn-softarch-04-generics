@@ -8,6 +8,8 @@ public interface SimpleList<E> extends Iterable<E> {
      */
     void add(E e);
 
+    E get(int index);
+
     /**
      * @return current size of the list
      */

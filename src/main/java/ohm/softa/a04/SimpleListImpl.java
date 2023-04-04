@@ -34,6 +34,18 @@ public class SimpleListImpl<E> implements SimpleList<E> {
 		size++;
 	}
 
+	public E get(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		ListElement<E> current = head;
+		for (int i = 0; i < index; i++) {
+			current = current.next;
+		}
+		return current.getItem();
+	}
+
+
 	/**
 	 * @return size of the list
 	 */
