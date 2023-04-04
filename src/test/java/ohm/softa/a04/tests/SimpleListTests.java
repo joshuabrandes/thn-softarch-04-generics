@@ -15,14 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Peter Kurfer
  * Created on 10/6/17.
  */
-public class SimpleListTests {
+class SimpleListTests {
 
 	private final Logger logger = LogManager.getLogger();
-	private SimpleList testList;
+	private SimpleList<Integer> testList;
 
 	@BeforeEach
 	void setup(){
-		testList = new SimpleListImpl();
+		testList = new SimpleListImpl<>();
 
 		testList.add(1);
 		testList.add(2);
@@ -50,16 +50,16 @@ public class SimpleListTests {
 	@Test
 	void testFilterAnonymousClass(){
 		logger.info("Testing the filter possibilities by filtering for all elements greater 2");
-		SimpleList result = testList.filter(new SimpleFilter() {
+		SimpleList<Integer> result = testList.filter(new SimpleFilter<Integer>() {
 			@Override
-			public boolean include(Object item) {
-				int current = (int)item;
+			public boolean include(Integer item) {
+				int current = item;
 				return current > 2;
 			}
 		});
 
-		for(Object o : result){
-			int i = (int)o;
+		for(Integer o : result){
+			int i = o;
 			assertTrue(i > 2);
 		}
 	}
@@ -67,10 +67,17 @@ public class SimpleListTests {
 	@Test
 	void testFilterLambda(){
 		logger.info("Testing the filter possibilities by filtering for all elements which are dividable by 2");
-		SimpleList result = testList.filter(o -> ((int) o) % 2 == 0);
-		for(Object o : result){
-			int i = (int)o;
-			assertTrue(i % 2 == 0);
+		SimpleList<Integer> result = testList.filter(o -> o % 2 == 0);
+		for(Integer o : result){
+			int i = o;
+			assertEquals(0, i % 2);
 		}
+	}
+
+	@Test
+	void testAddDefaultString() {
+		var result = new SimpleListImpl<String>();
+		result.addDefault(String.class);
+		assertEquals(1, result.size());
 	}
 }

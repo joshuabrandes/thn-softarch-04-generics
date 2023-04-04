@@ -6,9 +6,9 @@ import java.util.Iterator;
  * @author Peter Kurfer
  * Created on 10/6/17.
  */
-public class SimpleListImpl implements SimpleList {
+public class SimpleListImpl<E> implements SimpleList<E> {
 
-	private ListElement head;
+	private ListElement<E> head;
 	private int size;
 
 	public SimpleListImpl() {
@@ -17,19 +17,19 @@ public class SimpleListImpl implements SimpleList {
 
 	/**
 	 * Add an object to the end of the list
-	 * @param item item to add
+	 * @param e e to add
 	 */
-	public void add(Object item){
+	public void add(E e){
 		/* special case empty list */
 		if(head == null){
-			head = new ListElement(item);
+			head = new ListElement<>(e);
 		}else {
 			/* any other list length */
-			ListElement current = head;
+			var current = head;
 			while (current.getNext() != null){
 				current = current.getNext();
 			}
-			current.setNext(new ListElement(item));
+			current.setNext(new ListElement<>(e));
 		}
 		size++;
 	}
@@ -46,11 +46,11 @@ public class SimpleListImpl implements SimpleList {
 	 * @param filter SimpleFilter instance
 	 * @return new SimpleList instance
 	 */
-	public SimpleList filter(SimpleFilter filter){
-		SimpleList result = new SimpleListImpl();
-		for(Object o : this){
-			if(filter.include(o)){
-				result.add(o);
+	public SimpleList<E> filter(SimpleFilter<E> filter){
+		SimpleList<E> result = new SimpleListImpl<>();
+		for(E e : this){
+			if(filter.include(e)){
+				result.add(e);
 			}
 		}
 		return result;
@@ -60,7 +60,7 @@ public class SimpleListImpl implements SimpleList {
 	 * @inheritDoc
 	 */
 	@Override
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return new SimpleIterator();
 	}
 
@@ -68,9 +68,9 @@ public class SimpleListImpl implements SimpleList {
 	 * Helper class which implements the Iterator interface
 	 * Has to be non static because otherwise it could not access the head of the list
 	 */
-	private class SimpleIterator implements Iterator {
+	private class SimpleIterator implements Iterator<E> {
 
-		private ListElement current = head;
+		private ListElement<E> current = head;
 
 		/**
 		 * @inheritDoc
@@ -84,8 +84,8 @@ public class SimpleListImpl implements SimpleList {
 		 * @inheritDoc
 		 */
 		@Override
-		public Object next() {
-			Object tmp = current.getItem();
+		public E next() {
+			E tmp = current.getItem();
 			current = current.getNext();
 			return tmp;
 		}
@@ -95,26 +95,26 @@ public class SimpleListImpl implements SimpleList {
 	 * Helper class for the linked list
 	 * can be static because the ListElement does not need to access the SimpleList instance
 	 */
-	private static class ListElement {
-		private Object item;
-		private ListElement next;
+	private static class ListElement<E> {
+		private E e;
+		private ListElement<E> next;
 
-		ListElement(Object item) {
-			this.item = item;
+		ListElement(E e) {
+			this.e = e;
 			this.next = null;
 		}
 
 		/**
 		 * @return get object in the element
 		 */
-		public Object getItem() {
-			return item;
+		public E getItem() {
+			return e;
 		}
 
 		/**
 		 * @return successor of the ListElement - may be NULL
 		 */
-		public ListElement getNext() {
+		public ListElement<E> getNext() {
 			return next;
 		}
 
@@ -122,7 +122,7 @@ public class SimpleListImpl implements SimpleList {
 		 * Sets the successor of the ListElement
 		 * @param next ListElement
 		 */
-		public void setNext(ListElement next) {
+		public void setNext(ListElement<E> next) {
 			this.next = next;
 		}
 	}
